@@ -1,4 +1,4 @@
-local base = "https://raw.githubusercontent.com/XKLL1/codespaces-blank/main/"
+local base = "https://raw.githubusercontent.com/XKLL1/codespaces-blank/refs/heads/main/"
 
 local files = {
     "main.lua",
@@ -38,7 +38,7 @@ for _, path in ipairs(files) do
     if ok then
         storage[path] = res
     else
-        warn("Failed to load: " .. path)
+        warn("Failed to load file:", path, url)
     end
 end
 
@@ -46,7 +46,7 @@ local function vload(path)
     if storage[path] then
         return loadstring(storage[path])()
     end
-    return nil
+    warn("Missing virtual file:", path)
 end
 
 getgenv().loadfile = vload
