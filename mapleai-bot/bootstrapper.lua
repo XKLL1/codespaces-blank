@@ -1,4 +1,4 @@
-local base = "https://raw.githubusercontent.com/XKLL1/codespaces-blank/refs/heads/main/"
+local base = "https://raw.githubusercontent.com/XKLL1/codespaces-blank/refs/heads/main/mapleai-bot/"
 
 local files = {
     "main.lua",
