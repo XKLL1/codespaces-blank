@@ -1,6 +1,6 @@
 local base = "https://raw.githubusercontent.com/XKLL1/codespaces-blank/refs/heads/main/mapleai-bot/"
 
-local files = {
+local files1 = {
     "main.lua",
     "config/defaults.lua",
     "config/settings.lua",
@@ -9,14 +9,20 @@ local files = {
     "utils/logger.lua",
     "utils/tween.lua",
     "utils/performance.lua",
-    "utils/updater.lua",
+    "utils/updater.lua"
+}
+
+local files2 = {
     "gui/theme.lua",
     "gui/animations.lua",
     "gui/auth_gui.lua",
     "gui/dashboard_gui.lua",
     "gui/tab_transitions.lua",
     "gui/blur.lua",
-    "gui/sliders.lua",
+    "gui/sliders.lua"
+}
+
+local files3 = {
     "ai/maple_request.lua",
     "ai/ai_manager.lua",
     "ai/personality.lua",
@@ -30,23 +36,29 @@ local files = {
 
 local storage = {}
 
-for _, path in ipairs(files) do
-    local url = base .. path
-    local ok, res = pcall(function()
-        return game:HttpGet(url)
-    end)
-    if ok then
-        storage[path] = res
-    else
-        warn("Failed to load file:", path, url)
+local function fetch(list)
+    for _, p in ipairs(list) do
+        local ok, res = pcall(function()
+            return game:HttpGet(base .. p)
+        end)
+        if ok then
+            storage[p] = res
+        end
     end
 end
 
+fetch(files1)
+fetch(files2)
+fetch(files3)
+
 local function vload(path)
-    if storage[path] then
-        return loadstring(storage[path])()
-    end
-    warn("Missing virtual file:", path)
+    local src = storage[path]
+    if not src then return end
+    local fn = loadstring(src)
+    if not fn then return end
+    local ok, result = pcall(fn)
+    if not ok then return end
+    return result
 end
 
 getgenv().loadfile = vload
